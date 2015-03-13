@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "../data", "/farm"
+  config.vm.synced_folder ".", "/server"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -83,26 +83,9 @@ Vagrant.configure(2) do |config|
     
     # make, gcc, etc build tools
     sudo apt-get install -y -q build-essential curl git-core
-
-    # ruby favorable apt-get packages
-    # build-essential openssl
-    # libreadline6 libreadline6-dev
-    # curl git-core
-    # zlib1g zlib1g-dev
-    # libssl-dev libyaml-dev
-    # libsqlite3-dev sqlite3
-    # libxml2-dev libxslt-dev
-    # autoconf libc6-dev
-    # ncurses-dev automake
-    # libtool bison
-    # subversion libmysqlclient-dev
-    # libpq-dev wget
-    # nodejs
-
-    # from http://stackoverflow.com/questions/18490591/how-to-install-ruby-2-on-ubuntu-without-rvm
-    sudo apt-get install -y -q python-software-properties
     
-    # Adds Ruby 2.1 to Ubuntu 14.04
+    # Adds Ubuntu (Trusty 14.04, Precise 12.04 or Lucid 10.04) ruby support
+    # https://www.brightbox.com/docs/ruby/ubuntu/
     sudo apt-add-repository -y ppa:brightbox/ruby-ng
     
     # Adds Ruby 1.9, 2.0 or 2.1 to Ubuntu 14.04
@@ -111,27 +94,10 @@ Vagrant.configure(2) do |config|
     sudo apt-get -y -q update
 
     # now I can install ruby
-    sudo apt-get install -y -q ruby2.1 ruby2.1-dev
+    sudo apt-get install -y -q ruby2.2 ruby2.2-dev
 
-    # http://stackoverflow.com/a/1892889/2126990
-    # priority ruby: https://gist.github.com/brodock/7693207
-    sudo update-alternatives --remove ruby /usr/bin/ruby2.1
-    sudo update-alternatives --remove irb /usr/bin/irb2.1
-    sudo update-alternatives --remove gem /usr/bin/gem2.1
-
-    sudo update-alternatives \
-    --install /usr/bin/ruby ruby /usr/bin/ruby2.1 50 \
-    --slave /usr/bin/irb irb /usr/bin/irb2.1 \
-    --slave /usr/bin/rake rake /usr/bin/rake2.1 \
-    --slave /usr/bin/gem gem /usr/bin/gem2.1 \
-    --slave /usr/bin/rdoc rdoc /usr/bin/rdoc2.1 \
-    --slave /usr/bin/testrb testrb /usr/bin/testrb2.1 \
-    --slave /usr/bin/erb erb /usr/bin/erb2.1 \
-    --slave /usr/bin/ri ri /usr/bin/ri2.1
-
-    update-alternatives --config ruby
-    update-alternatives --display ruby
-
+    # install ruby gems
     sudo gem install --no-ri --no-rdoc bundler
+
   SHELL
 end
